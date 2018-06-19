@@ -5,4 +5,4 @@ from django.db.models import Max
 
 def display(request):
     lot = Stocks.objects.all()
-    return render(request,'stocks.html')
+    return render(request,'stocks.html',{'stock' : lot})

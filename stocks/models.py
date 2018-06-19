@@ -23,7 +23,7 @@ class Stocks(models.Model):
     commodity = models.ForeignKey(Commodity, on_delete=models.CASCADE)
     begs = models.IntegerField(default=0)
     boxes = models.IntegerField(default=0)
-    remarks = models.TextField(max_length=200, null=False)
+    remarks = models.TextField(max_length=200, null=True)
 
     def __str__(self):
         """

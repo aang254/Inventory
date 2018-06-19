@@ -129,6 +129,7 @@
                   <th>Commodity</th>
                   <th>Begs</th>
                   <th>Boxes</th>
+                  <th>Remarks</th>
                 </tr>
               </thead>
               <tfoot>
@@ -139,17 +140,21 @@
                   <th>Commodity</th>
                   <th>Begs</th>
                   <th>Boxes</th>
+                  <th>Remarks</th>
                 </tr>
               </tfoot>
               <tbody>
+              {% for item in stock %}
                 <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
-                  <td>$320,800</td>
+                  <td>{{ item.date }}</td>
+                  <td>{{ item.lot }}</td>
+                  <td>{{ item.Name }}</td>
+                  <td>{{ item.commodity }}</td>
+                  <td>{{ item.begs }}</td>
+                  <td>{{ item.boxes }}</td>
+                  <td>{{ item.remarks }}</td>
                 </tr>
+              {% endfor %}
               </tbody>
             </table>
           </div>
