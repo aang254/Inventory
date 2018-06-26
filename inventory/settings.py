@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'party',
     'commodity',
     'stocks',
+    'gatepass',
 ]
 
 MIDDLEWARE = [

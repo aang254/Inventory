@@ -17,4 +17,4 @@ class party_Ledger(models.Model):
         """
         String for representing the Model object.
         """
-        return self.Name
+        return self.Name + self.gstin

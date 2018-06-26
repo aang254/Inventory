@@ -21,4 +21,5 @@ urlpatterns = [
     path('', views.homepage,),
     re_path(r'admin/', admin.site.urls),
     re_path(r'stock/', include('stocks.urls')),
+    re_path(r'gatepass/', include('gatepass.urls'), name='data'),
 ]
