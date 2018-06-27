@@ -17,8 +17,11 @@ var pickedup;
 				  pickedup = $( this );
 			});
 
-            $( "#Boxes" ).keypress(function( event ) {
+            $(document).keypress(function( event ) {
 			    if (event.which == 13){
+					   var id = $(event.target).attr("id")
+					   alert(id);
+					   if(id == "Boxes"){
 				       var name = $("#Lot").val();
 					   var position = $("#Party").val();
 					   var office = $("#Commodity").val();
@@ -38,7 +41,7 @@ var pickedup;
 					else{
 					   var row = "<tr><td>" + name + "</td><td>" + position + "</td><td>" + office + "</td><td>" + age + "</td><td>" + date + "</td><td>" + salary + "</td></tr>";
 					   $( "#dataTable tbody" ).append(row);
-
+                       $("#Lot").focus();
 					}
 
 					$("#Lot").val(" ");
@@ -48,12 +51,41 @@ var pickedup;
 					$("#Begs").val(" ");
 					$("#Boxes").val(" ");
 
+					   }
+
+					if(id == "Lot"){
+					   alert("you reached lot");
+					   var lotNo = $("#Lot").val();
+					   alert(lotNo);
+					   $.ajax({
+					type: "POST",
+					url: "/gatepass/get_details/",
+					data: {'mydata': lotNo },
+					success: function(msg){
+						$("#Party").val(msg[0].Name);
+						$("#Commodity").val(msg[0].Comodity);
+						$("#GSTIN").val(msg[0].gstin);
+						$("#Begs").val(msg[0].bags);
+						$("#Boxes").val(msg[0].boxes);
+                        $("#Boxes").focus();
+					}
+				});
+
+				}
+
+
 					return false;
 				}
 
 
 
             })
+
+
+
+
+
+
 		});
 
 
@@ -89,8 +121,8 @@ $(document).ready(function() {
 
 				$.ajax({
 					type: "POST",
-					url: "/post_test/",
-					data: {'mydata': TableData , 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+					url: "/gatepass/submit_gatepass/",
+					data: {'mydata': TableData },
 					success: function(msg){
 						alert(TableData)
 					}

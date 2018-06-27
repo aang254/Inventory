@@ -29,4 +29,6 @@ class Stocks(models.Model):
         """
         String for representing the Model object.
         """
-        return str(self.lot)
+        return str(self.lot) + ',' + str(self.date) + ',' + str(self.Name) + ',' + str(self.commodity) + ',' + \
+               str(self.begs) + ',' + str(self.boxes)
+

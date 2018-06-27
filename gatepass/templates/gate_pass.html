@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<body class="fixed-nav sticky-footer bg-dark" id="page-top" onLoad="document.getElementById('txtgatepass').focus();">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="#">Warehouse Management System</a>
@@ -128,11 +128,11 @@
             <div class="form-row">
               <div class="col-md-4">
                 <label for="txtgatepass">Gate Pass.</label>
-                <input class="form-control" id="txtgatepass" type="text" aria-describedby="nameHelp" >
+                <input class="form-control" id="txtgatepass" name = "txtgatepass" type="text" value="{{ pass }}" aria-describedby="nameHelp" >
               </div>
               <div class="col-md-4">
                 <label for="txtdate">Date</label>
-                <input class="form-control" id="txtdate" type="text" aria-describedby="nameHelp" >
+                <input class="form-control" id="txtdate" type="text" value="{{ date }}" aria-describedby="nameHelp" >
               </div>
               <div class="col-md-4">
                 <label for="txtdriver">Driver Name</label>
@@ -180,9 +180,9 @@
 
                 <tr>
                   <th><input type="text" id="Lot"/></th>
-                  <th><input type="text" id="Party"/></th>
-                  <th><input type="text" id="Commodity"/></th>
-                  <th><input type="text" id="GSTIN"/></th>
+                  <th><input type="text" id="Party" readonly="readonly" value="hello" /></th>
+                  <th><input type="text" id="Commodity" readonly="readonly" /></th>
+                  <th><input type="text" id="GSTIN" readonly="readonly" /></th>
                   <th><input type="text" id="Begs"/></th>
                   <th><input type="text" id="Boxes" /></th>
                 </tr>
