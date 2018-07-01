@@ -1,5 +1,6 @@
 var pickedup;
 	$(document).ready(function() {
+
 			$( document ).on( "click", "#dataTable tbody tr" ,function( event ) {
 
 				  // get back to where it was before if it was selected :
@@ -20,7 +21,6 @@ var pickedup;
             $(document).keypress(function( event ) {
 			    if (event.which == 13){
 					   var id = $(event.target).attr("id")
-					   alert(id);
 					   if(id == "Boxes"){
 				       var name = $("#Lot").val();
 					   var position = $("#Party").val();
@@ -54,9 +54,8 @@ var pickedup;
 					   }
 
 					if(id == "Lot"){
-					   alert("you reached lot");
 					   var lotNo = $("#Lot").val();
-					   alert(lotNo);
+					if(lotNo != ""){
 					   $.ajax({
 					type: "POST",
 					url: "/gatepass/get_details/",
@@ -67,12 +66,73 @@ var pickedup;
 						$("#GSTIN").val(msg[0].gstin);
 						$("#Begs").val(msg[0].bags);
 						$("#Boxes").val(msg[0].boxes);
-                        $("#Boxes").focus();
+                        $("#Begs").focus();
+
 					}
 				});
 
 				}
+				else {
+					alert("Please enter a Lot");
+				}
+					}
 
+                if(id == "Begs"){
+					if($("#Begs").val() != "" ){
+				        $("#Boxes").focus();
+					}
+
+				else{
+				$("#Begs").val(0);
+				$("#Boxes").focus();
+				}
+
+				}
+				if(id == "txtgatepass"){
+					if($("#txtgatepass").val() != "" ){
+						if($.isNumeric( $('#txtgatepass').val())){
+							$("#txtdate").focus();
+						}
+						else{alert("Enter only numeric value");}
+
+					}
+				else{alert("GatePass Field can't be empty");}
+				}
+				if(id == "txtdate"){
+					if($("#txtdate").val() != "" ){
+					  var T_date = $("#txtdate").val()
+					  if(T_date.indexOf('.') >=0){
+					     //var options = {year: 'numeric', month: 'numeric', day: 'numeric' };
+					     var parts = ($("#txtdate").val()).split(".");
+					     var yy       = parts[2];
+                         var newdate  = (yy < 90) ? '20' + yy : '19' + yy;
+					     date = new Date(newdate, parts[1] - 1, parts[0]);
+					     var datestring = ("0" + date.getDate()).slice(-2) + "/" + ("0"+(date.getMonth()+1)).slice(-2) + "/" +
+                         date.getFullYear();
+					     $("#txtdate").val(datestring);
+					     $("#txtdriver").focus();
+					   }
+					   else if(T_date.indexOf('/') >=0){
+					       $("#txtdriver").focus();
+					   }
+					   else{
+					      alert("Please enter date in dd/mm/yyyy format");
+					   }
+
+					}
+
+				else{alert("Date Field can't be empty");}
+
+				}
+				if(id == "txtdriver"){
+				   $("#txteway").focus();
+				}
+				if(id == "txteway"){
+				   $("#txtvehicle").focus();
+				}
+				if(id == "txtvehicle"){
+				   $("#Lot").focus();
+				}
 
 					return false;
 				}
@@ -106,6 +166,8 @@ $(document).ready(function() {
 						"gatepass": $("#txtgatepass").val(),
 						"eway": $("#txteway").val(),
 						"date": $("#txtdate").val(),
+						 "driver_name": $("#txtdriver").val(),
+						 "vehicleNo": $("#txtvehicle").val(),
 						"Lot" : $(tr).find('td:eq(0)').text()
 						, "Party" :$(tr).find('td:eq(1)').text()
 						, "Commodity" : $(tr).find('td:eq(2)').text()
@@ -117,15 +179,10 @@ $(document).ready(function() {
 				return TableData;
                 }
 
-				alert(TableData);
-
 				$.ajax({
 					type: "POST",
 					url: "/gatepass/submit_gatepass/",
-					data: {'mydata': TableData },
-					success: function(msg){
-						alert(TableData)
-					}
+					data: {'mydata': TableData }
 				});
 
 

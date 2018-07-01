@@ -118,100 +118,53 @@
         <li class="breadcrumb-item">
           <a href=" ">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">GatePass/Add</li>
+        <li class="breadcrumb-item active">Balance</li>
       </ol>
-
-     <form id="form_gatepass" method="post">
-  {% csrf_token %}
-        <div class="form-group">
-         <div class="form-group">
-            <div class="form-row">
-              <div class="col-md-4">
-                <label for="txtgatepass">Gate Pass.</label>
-                <input class="form-control" id="txtgatepass" name = "txtgatepass" type="text" value="{{ pass }}" aria-describedby="nameHelp" >
-              </div>
-              <div class="col-md-4">
-                <label for="txtdate">Date</label>
-                <input class="form-control" id="txtdate" type="text" value="{{ date }}" aria-describedby="nameHelp" >
-              </div>
-              <div class="col-md-4">
-                <label for="txtdriver">Driver Name</label>
-                <input class="form-control" id="txtdriver" type="text" aria-describedby="nameHelp" >
-              </div>
-            </div>
-          </div>
-         <div class="form-group">
-            <div class="form-row">
-            <div class="col-md-6">
-                <label for="txteway">Eway Bill NO.</label>
-                <input class="form-control" id="txteway" type="text" aria-describedby="nameHelp" placeholder="Please Enter Eway Bill No.">
-              </div>
-              <div class="col-md-6">
-                <label for="txtvehicle">Vehicle No.</label>
-                <input class="form-control" id="txtvehicle" type="text" aria-describedby="nameHelp" >
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-
 
          <!--Grid Table Starts -->
         <div class="form-group">
            <div class="card mb-3">
 
-
+          <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> {{ party_name }} Details</div>
+        <div class="card-body">
           <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Lot</th>
-                  <th>Party Name</th>
-                  <th>Commodity</th>
-                  <th>GSTIN</th>
-                  <th>Begs</th>
-                  <th>Boxes</th>
+                    <th>lot</th>
+                    <th>Party Name</th>
+                    <th>begs</th>
+                    <th>boxes</th>
+                    <th>Commodity</th>
+                    <th>rem_beg</th>
+                    <th>rem_box</th>
                 </tr>
               </thead>
-              <tfoot>
 
-                <tr>
-                  <th><input type="text" id="Lot"/></th>
-                  <th><input type="text" id="Party" readonly="readonly" /></th>
-                  <th><input type="text" id="Commodity" readonly="readonly" /></th>
-                  <th><input type="text" id="GSTIN" readonly="readonly" /></th>
-                  <th><input type="text" id="Begs"/></th>
-                  <th><input type="text" id="Boxes" /></th>
-                </tr>
-              </tfoot>
               <tbody>
-
+                  {% for party in party_data %}
+                  <tr>
+                      <td>{{ party.lot }}</td>
+                      <td>{{ party.Name }}</td>
+                      <td>{{ party.begs }}</td>
+                      <td>{{ party.boxes }}</td>
+                      <td>{{ party.Commodity }}</td>
+                      <td>{{ party.rem_beg }}</td>
+                      <td>{{ party.rem_box }}</td>
+                  </tr>
+                  {% endfor %}
               </tbody>
             </table>
           </div>
+              </div>
+          </div>
 
-      </div>
-    </div>
 
 
 
          <!-- Grid Table Ends -->
-
- <div class="form-group">
-            <div class="form-row">
-            <div class="col-md-6">
-
-                </div>
-              <div class="col-md-6">
-                <input class="form-control" id="btnsubmit" type="Submit" aria-describedby="nameHelp" >
-              </div>
-            </div>
-          </div>
-
-     </form>
       </div>
     <!-- Content page Ends-->
 
@@ -264,13 +217,12 @@
     <!-- Core plugin JavaScript-->
     <script src="{% static "vendor/jquery-easing/jquery.easing.min.js" %}"></script>
     <!-- Page level plugin JavaScript-->
-    <script src="{% static "vendor/chart.js/Chart.min.js" %}"></script>
+    <script src="{% static "vendor/datatables/jquery.dataTables.js" %}"></script>
+    <script src="{% static "vendor/datatables/dataTables.bootstrap4.js" %}"></script>
     <!-- Custom scripts for all pages-->
     <script src="{% static "js/sb-admin.min.js" %}"></script>
     <!-- Custom scripts for this page-->
-    <script src="{% static "js/sb-admin-charts.min.js" %}"></script>
-
-    <script src="{% static "custom_jquery/table_gatepass.js" %}"></script>
+    <script src="{% static "js/sb-admin-datatables.min.js" %}"></script>
 
 	{% block js-foot %}
 

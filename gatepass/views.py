@@ -4,9 +4,11 @@ from django.http import HttpResponse
 from gatepass.models import gate_pass
 from stocks.models import Stocks
 from django.db.models import Max
-from party.models import party_Ledger
+from django.shortcuts import redirect
 import datetime
 import json
+from . import vault,generate_gatepass
+
 
 def gatepass(request):
     no = gate_pass.objects.all().aggregate(Max('passNo'))
@@ -17,7 +19,7 @@ def gatepass(request):
         passNo = numb + 1
 
     today = datetime.datetime.now()
-    today = today.strftime("%d-%m-%Y")
+    today = today.strftime("%d/%m/%Y")
     print(today)
     print(passNo)
     return render (request,'gate_pass.html',{'pass': passNo, 'date': today})
@@ -46,12 +48,32 @@ def getdata(request):
 
 
 
-def test_form(request):
-    return render (request, 'form_testing.html')
-
-
 @csrf_exempt
 def submit(request):
     data = request.POST['mydata']
-    print(data)
-    return HttpResponse ("<p> Hello </p>")
+    data = json.loads(data)
+    item = {}
+    item['CompanyName'] = vault.company
+    item['Address'] = vault.Address
+    item['GSTIN'] = vault.GSTIN
+    item['BillNo'] = data[0]['gatepass']
+    item['date'] = data[0]['date']
+    item['Vehicle'] = data[0]['vehicleNo']
+    item['WayBill'] = data[0]['eway']
+    item['driver'] = data[0]['driver_name']
+    item['entries'] = data
+    json_data = json.dumps(item)
+    for item in data:
+        format_str = '%d/%m/%Y'  # The format
+        datetime_obj = datetime.datetime.strptime(item['date'], format_str)
+        gate_pass.objects.create(passNo=item['gatepass'],date=datetime_obj.date(),driver_name=item['driver_name'],
+                                 Auto_No=item['vehicleNo'],lot=item['Lot'],
+                                 Name=item['Party'],commodity=item['Commodity'],gstin=item['GSTIN'],
+                                 bill_no=item['eway'],bags=item['Begs'],boxes=item['Boxes'])
+
+    generate_gatepass.generate(json_data)
+    return redirect ("/gatepass/add/")
+
+
+
+

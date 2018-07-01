@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'commodity',
     'stocks',
     'gatepass',
+    'balance',
 ]
 
 MIDDLEWARE = [
