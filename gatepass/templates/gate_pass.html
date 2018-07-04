@@ -21,15 +21,15 @@
             <div class="form-row">
               <div class="col-md-4">
                 <label for="txtgatepass">Gate Pass.</label>
-                <input class="form-control" id="txtgatepass" name = "txtgatepass" type="text" value="{{ pass }}" aria-describedby="nameHelp" >
+                <input  onfocus="this.select();" class="form-control" id="txtgatepass" name = "txtgatepass" type="text" value="{{ pass }}" aria-describedby="nameHelp" >
               </div>
               <div class="col-md-4">
                 <label for="txtdate">Date</label>
-                <input class="form-control" id="txtdate" type="text" value="{{ date }}" aria-describedby="nameHelp" >
+                <input onfocus="this.select();" class="form-control" id="txtdate" type="text" value="{{ date }}" aria-describedby="nameHelp" >
               </div>
               <div class="col-md-4">
                 <label for="txtdriver">Driver Name</label>
-                <input class="form-control" id="txtdriver" type="text" aria-describedby="nameHelp" >
+                <input class="form-control" id="txtdriver" type="text" onfocus="this.select();" aria-describedby="nameHelp" >
               </div>
             </div>
           </div>
@@ -37,11 +37,11 @@
             <div class="form-row">
             <div class="col-md-6">
                 <label for="txteway">Eway Bill NO.</label>
-                <input class="form-control" id="txteway" type="text" aria-describedby="nameHelp" placeholder="Please Enter Eway Bill No.">
+                <input onfocus="this.select();" class="form-control" id="txteway" type="text" aria-describedby="nameHelp" placeholder="Please Enter Eway Bill No.">
               </div>
               <div class="col-md-6">
                 <label for="txtvehicle">Vehicle No.</label>
-                <input class="form-control" id="txtvehicle" type="text" aria-describedby="nameHelp" >
+                <input class="form-control" id="txtvehicle" type="text" aria-describedby="nameHelp" onfocus="this.select();">
               </div>
             </div>
           </div>
@@ -72,12 +72,12 @@
               <tfoot>
 
                 <tr>
-                  <th><input type="text" id="Lot"/></th>
+                  <th><input type="text" id="Lot" onfocus="this.select();"/></th>
                   <th><input type="text" id="Party" readonly="readonly" /></th>
                   <th><input type="text" id="Commodity" readonly="readonly" /></th>
                   <th><input type="text" id="GSTIN" readonly="readonly" /></th>
-                  <th><input type="text" id="Begs"/></th>
-                  <th><input type="text" id="Boxes" /></th>
+                  <th><input type="text" id="Begs" onfocus="this.select();"/></th>
+                  <th><input type="text" id="Boxes" onfocus="this.select();" /></th>
                 </tr>
               </tfoot>
               <tbody>

@@ -105,11 +105,19 @@
         </li>
 
 	  <!-- Balance bar -->
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Balance">
-          <a class="nav-link" href="/balance">
-            <i class="fa fa-fw fa-dashboard"></i>
+	   <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Balance">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseBalance" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-wrench"></i>
             <span class="nav-link-text">Balance</span>
           </a>
+          <ul class="sidenav-second-level collapse" id="collapseBalance">
+            <li>
+              <a href="/balance">Party Wise</a>
+            </li>
+            <li>
+		    <a href="/balance/get_comm_bal/">Commodity Wise</a>
+            </li>
+          </ul>
         </li>
 	  </ul>
 	  <!-- Side Navigation Bar ends -->
