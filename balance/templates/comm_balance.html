@@ -26,10 +26,9 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                    <th>Party Name</th>
+                    <th>Commodity</th>
                     <th>Begs</th>
                     <th>Boxes</th>
-                    <th>Commodity</th>
                     <th>Begs Out</th>
                     <th>Boxes Out</th>
                     <th>Begs Remaining</th>
@@ -40,10 +39,9 @@
               <tbody>
                   {% for party in party_data %}
                   <tr>
-                      <td>{{ party.Name }}</td>
+                      <td>{{ party.Commodity }}</td>
                       <td>{{ party.Begs_in }}</td>
                       <td>{{ party.Boxes_in }}</td>
-                      <td>{{ party.Commodity }}</td>
                       <td>{{ party.begs_out }}</td>
                       <td>{{ party.boxes_out }}</td>
                       <td>{{ party.rem_beg }}</td>
@@ -56,7 +54,6 @@
                     <th>Total</th>
                     <th>{{ Begs_in }} </th>
                     <th> {{ Boxes_in }}</th>
-                    <th> </th>
                     <th> {{ begs_out }}</th>
                     <th>{{ boxes_out }} </th>
                     <th>{{ beg_rem }}</th>

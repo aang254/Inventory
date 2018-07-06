@@ -27,7 +27,7 @@ class MCLine(Flowable):
 
 def generate(item):
     item = json.loads(item)
-    file_name = "Bill_" + item['BillNo'] + ".pdf"
+    file_name = "Bills/" + "Bill_" + item['BillNo'] + ".pdf"
     doc = SimpleDocTemplate(file_name, pagesize=A5,
                         rightMargin=72, leftMargin=72,
                         topMargin=40, bottomMargin=18)
