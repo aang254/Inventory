@@ -23,4 +23,7 @@ class gate_pass(models.Model):
         """
         String for representing the Model object.
         """
-        return self.Name
+
+        return str(self.passNo) + "," + str(self.lot) + "," + str(self.date) + "," + str(self.Name)\
+               + "," + str(self.commodity) + "," + str(self.bags) + "," + str(self.boxes) + "," + str(self.Auto_No)\
+               + "," + str(self.driver_name) + "," + str(self.bill_no) + "," + str(self.gstin)

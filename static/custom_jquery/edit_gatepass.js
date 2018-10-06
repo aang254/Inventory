@@ -41,12 +41,15 @@ function count_col()
 	for (var i=3; i < 9; i++){
 		var b_count = tab.getElementsByTagName('tr')[i].cells[4].getElementsByTagName("input")[0].value;
 		var bx_count = tab.getElementsByTagName('tr')[i].cells[5].getElementsByTagName("input")[0].value;
+		console.log(b_count);
+		console.log(bx_count);
 		if(b_count == " "){
 			b_count = 0;
 			bx_count = 0;
 		}
 		beg = parseInt(beg) + parseInt(b_count);
 		box = parseInt(box) + parseInt(bx_count);
+		
 	}
 	var total = new Array();
 	total = {
@@ -95,9 +98,11 @@ $(document).ready(function() {
 									 $("#Lot").focus();
 								  }
 							});
+							return false;
 						}
 						else{
 							alert("Please enter a Lot");
+							return false;	
 						}
                         return false;						
 					}
@@ -117,6 +122,7 @@ $(document).ready(function() {
 							pickedup.cells[3].getElementsByTagName("input")[0].value = $("#GSTIN").val();
 							pickedup.cells[4].getElementsByTagName("input")[0].value = $("#Begs").val();
 							pickedup.cells[5].getElementsByTagName("input")[0].value = $("#Boxes").val();
+							pickedup.style.background = "";
 							pickedup = null;
 							var count = count_col();
 							document.getElementById("lbl_ttlbegs").innerText = count['beg'];
@@ -163,22 +169,7 @@ $(document).ready(function() {
 						}
 				
 					if(id == "txtgatepass"){
-						var passNo = $("#txtgatepass").val();
-						$.ajax({
-							   type: "POST",
-							   url: "/gatepass/get_details/",
-							   data: {'passNo': passNo, 'lotNo': " " },
-					           success: function(msg){
-								   alert("Gatepass already Exists");
-								   $("#txtgatepass").val(" ");
-								   
-								},
-								error: function(XMLHttpRequest, textStatus, errorThrown) {
-									$("#txtdate").focus();
-								  }
-							});
-						
-							
+						    $("#txtdate").focus();
 							return false;
 						}
 					if(id == "txtdate"){

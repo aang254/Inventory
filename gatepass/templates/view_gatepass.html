@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}<title>Warehouse Management System</title>{% endblock %}
+
+{% block title_js %} <script src="{% static "node_modules\jquery\dist\jquery.js"%}"> </script> {% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href=" ">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Gatepass</li>
+      </ol>
+         <!--Grid Table Starts -->
+        <div class="form-group">
+           <div class="card mb-3">
+
+          <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Details</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <form id="form_gatepass" method="post" action="\gatepass\edit_gatepass\">
+                  {% csrf_token %}
+                  <input type="hidden" name="txtgatepass" id="txtgatepass" value=" "/>
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th></th>
+                    <th>GatePass</th>
+                    <th>Lot</th>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Commodity</th>
+                    <th>Bags</th>
+                    <th>Boxes</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                  {% for item in item_data %}
+                  <tr>
+                      <th><a href="\gatepass\{{ item.GatePass }}\del\"> Delete </a></th>
+                      <th><input style="border:none" type="text"  readonly="readonly" value="{{ item.GatePass }}"/></th>
+                      <th>{{ item.Lot }}</th>
+                      <th>{{ item.Date }}</th>
+                      <th>{{ item.Name }}</th>
+                      <th>{{ item.Commodity }}</th>
+                      <th>{{ item.Bags }}</th>
+                      <th>{{ item.Boxes }}</th>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                    <th></th>
+                    <th>GatePass</th>
+                    <th>Lot</th>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Commodity</th>
+                    <th>Bags</th>
+                    <th>Boxes</th>
+                </tr>
+              </tfoot>
+            </table>
+            </form>
+          </div>
+              </div>
+          </div>
+         <!-- Grid Table Ends -->
+      </div>
+    <!-- Content page Ends-->
+
+    </div>
+     </div>
+{% endblock %}
+{% block js-foot %}
+<!-- Page level plugin JavaScript-->
+    <script src="{% static "vendor/datatables/jquery.dataTables.js" %}"></script>
+    <script src="{% static "vendor/datatables/dataTables.bootstrap4.js" %}"></script>
+	<!-- Custom scripts for this page-->
+    <script src="{% static "js/sb-admin-datatables.min.js" %}"></script>
+    <script src="{% static "custom_jquery/view_gatepass.js" %}"></script>
+{% endblock %}

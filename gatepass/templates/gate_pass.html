@@ -5,6 +5,7 @@
 {% block title_js %} <script src="{% static "node_modules\jquery\dist\jquery.js"%}"> </script> {% endblock %}
 
 {% block content %}
+<div class="img-responsive">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
@@ -14,22 +15,22 @@
         <li class="breadcrumb-item active">GatePass/Add</li>
       </ol>
 
-     <form id="form_gatepass" method="post">
-  {% csrf_token %}
+     <form id="form_gatepass" method="post" action="\gatepass\submit_gatepass\">
+      {% csrf_token %}
         <div class="form-group">
          <div class="form-group">
             <div class="form-row">
               <div class="col-md-4">
                 <label for="txtgatepass">Gate Pass.</label>
-                <input onfocus="this.select();" class="form-control" id="txtgatepass" name = "txtgatepass" type="text" value="{{ pass }}" aria-describedby="nameHelp" autofocus>
+                <input onfocus="this.select();" class="form-control" id="txtgatepass" name = "txtgatepass" type="text" value="{{ pass }}" aria-describedby="nameHelp" autofocus required>
               </div>
               <div class="col-md-4">
                 <label for="txtdate">Date</label>
-                <input onfocus="this.select();" class="form-control" id="txtdate" type="text" value="{{ date }}" aria-describedby="nameHelp" >
+                <input onfocus="this.select();" class="form-control" name="txtdate" id="txtdate" type="text" value="{{ date }}" aria-describedby="nameHelp" required>
               </div>
               <div class="col-md-4">
                 <label for="txtdriver">Driver Name</label>
-                <input class="form-control" id="txtdriver" type="text" onfocus="this.select();" aria-describedby="nameHelp" >
+                <input class="form-control" id="txtdriver" name="txtdriver" type="text" onfocus="this.select();" aria-describedby="nameHelp" >
               </div>
             </div>
           </div>
@@ -37,11 +38,11 @@
             <div class="form-row">
             <div class="col-md-6">
                 <label for="txteway">Eway Bill NO.</label>
-                <input onfocus="this.select();" class="form-control" id="txteway" type="text" aria-describedby="nameHelp" placeholder="Please Enter Eway Bill No.">
+                <input onfocus="this.select();" class="form-control" name="txteway" id="txteway" type="text" aria-describedby="nameHelp" placeholder="Please Enter Eway Bill No." required>
               </div>
               <div class="col-md-6">
                 <label for="txtvehicle">Vehicle No.</label>
-                <input class="form-control" id="txtvehicle" type="text" aria-describedby="nameHelp" onfocus="this.select();">
+                <input class="form-control" id="txtvehicle" name="txtvehicle" type="text" aria-describedby="nameHelp" onfocus="this.select();">
               </div>
             </div>
           </div>
@@ -58,7 +59,7 @@
 
 
           <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered" name="dataTable" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th>Lot</th>
@@ -70,8 +71,15 @@
                 </tr>
               </thead>
               <tfoot>
-
-                <tr>
+              <tr>
+                  <th>Total</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th><label id="lbl_ttlbegs" readonly="readonly">0</label></th>
+                  <th><label id="lbl_ttlboxes" readonly="readonly">0</label></th>
+                </tr>
+              <tr>
                   <th><input type="text" id="Lot" onfocus="this.select();"/></th>
                   <th><input type="text" id="Party" readonly="readonly" /></th>
                   <th><input type="text" id="Commodity" readonly="readonly" /></th>
@@ -81,27 +89,42 @@
                 </tr>
               </tfoot>
               <tbody>
+              {% for i in "012345" %}
+               <tr>
+                  <th><input style="border:none" type="text" name="Lot{{ i }}" id="Lot{{ i }}" readonly="readonly" value=" "/></th>
+                  <th><input style="border:none" type="text" name="Party{{ i }}" id="Party{{ i }}" readonly="readonly" value=" " /></th>
+                  <th><input style="border:none" type="text" name="Commodity{{ i }}" id="Commodity{{ i }}" readonly="readonly" value=" "/></th>
+                  <th><input style="border:none" type="text" name ="GSTIN{{ i }}" id="GSTIN{{ i }}" readonly="readonly" value=" " /></th>
+                  <th><input style="border:none" type="text" name="Begs{{ i }}" id="Begs{{ i }}" readonly="readonly" value=" " /></th>
+                  <th><input style="border:none" type="text" name="Boxes{{ i }}" id="Boxes{{ i }}" readonly="readonly" value=" " /></th>
+                </tr>
+                {% endfor %}
 
               </tbody>
+
             </table>
           </div>
 
       </div>
-    </div>
+     </div>
 
          <!-- Grid Table Ends -->
 
- <div class="form-group">
-            <div class="form-row">
-            <div class="col-md-6"> </div>
-              <div class="col-md-6">
-                <input class="form-control" id="btnsubmit" type="Submit" aria-describedby="nameHelp" >
-              </div>
-            </div>
-          </div>
+        <div class="form-group">
+                    <div class="form-row">
+                    <div class="col-md-6"> </div>
+                      <div class="col-md-3">
+                        <input class="form-control" id="btnsubmit" type="Submit" aria-describedby="nameHelp" >
+                      </div>
+                      <div class="col-md-3">
+                        <a href="\gatepass\view\"> Cancel </a>
+                      </div>
+                    </div>
+                  </div>
 
-     </form>
+            </form>
       </div>
+    </div>
 {% endblock %}
 
 {% block js-foot %}

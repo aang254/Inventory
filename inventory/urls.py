@@ -23,4 +23,5 @@ urlpatterns = [
     re_path(r'stock/', include('stocks.urls')),
     re_path(r'gatepass/', include('gatepass.urls'), name='data'),
     re_path(r'balance/', include('balance.urls')),
+    re_path(r'party/',include('party.urls')),
 ]

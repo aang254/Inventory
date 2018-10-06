@@ -1,4 +1,5 @@
 import json
+import os
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER,TA_RIGHT
 from reportlab.lib.pagesizes import A5
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Flowable
@@ -26,8 +27,12 @@ class MCLine(Flowable):
 
 
 def generate(item):
-    item = json.loads(item)
-    file_name = "Bills/" + "Bill_" + item['BillNo'] + ".pdf"
+    file_name = "Bills/" + "Bill_" + item[0]['gatepass'] + ".pdf"
+
+    if os.path.exists(file_name):
+        os.remove(file_name)
+
+
     doc = SimpleDocTemplate(file_name, pagesize=A5,
                         rightMargin=72, leftMargin=72,
                         topMargin=40, bottomMargin=18)
@@ -35,14 +40,14 @@ def generate(item):
     ##############################################################################
     #Variable Initiation
     ##############################################################################
-    company = item['CompanyName']
-    address = item['Address']
-    company_GSTIN = "GSTIN:- " + str(item['GSTIN'])
-    BillNo = item['BillNo']
-    formatted_time = item['date']
-    Vehicle_number = item['Vehicle']
-    WayBill = item['WayBill']
-    driveName = item['driver']
+    company = " "
+    address = " "
+    company_GSTIN = "GSTIN:- " + " "
+    BillNo = item[0]['gatepass']
+    formatted_time = item[0]['date']
+    Vehicle_number = item[0]['vehicleNo']
+    WayBill = item[0]['eway']
+    driveName = item[0]['driver_name']
     ##############################################################################
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Center', alignment=TA_CENTER))
@@ -103,7 +108,7 @@ def generate(item):
     item_details = {'name': 'kism', 'party':'testing1234User', 'Tin': 'Abhsdidsew2321', 'qty': '12'}
 
     tbl_data = []
-    for i in item['entries']:
+    for i in item:
         Item = Paragraph(i['Commodity'], styles["Justify"])
         Name = Paragraph(i['Party'], styles["Justify"])
         Gstin = Paragraph(i['GSTIN'], styles["Justify"])

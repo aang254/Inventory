@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}<title>Warehouse Management System</title>{% endblock %}
+
+{% block title_js %} <script src="{% static "node_modules\jquery\dist\jquery.js"%}"> </script> {% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href=" ">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">GatePass/Edit</li>
+      </ol>
+
+     <form id="form_gatepass" method="post" action="\gatepass\submit_edit_gatepass\">
+  {% csrf_token %}
+        <div class="form-group">
+         <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-4">
+                <label for="txtgatepass">Gate Pass.</label>
+                <input onfocus="this.select();" class="form-control" id="txtgatepass" name = "txtgatepass" type="text" value="{{ GatePass }}" aria-describedby="nameHelp" readonly="readonly">
+              </div>
+              <div class="col-md-4">
+                <label for="txtdate">Date</label>
+                <input onfocus="this.select();" class="form-control" id="txtdate" name = "txtdate" type="text" value="{{ Date }}" aria-describedby="nameHelp" autofocus>
+              </div>
+              <div class="col-md-4">
+                <label for="txtdriver">Driver Name</label>
+                <input class="form-control" id="txtdriver" name = "txtdriver" type="text" onfocus="this.select();" value="{{ Driver }}" aria-describedby="nameHelp" >
+              </div>
+            </div>
+          </div>
+         <div class="form-group">
+            <div class="form-row">
+            <div class="col-md-6">
+                <label for="txteway">Eway Bill NO.</label>
+                <input onfocus="this.select();" class="form-control" value="{{ WayNo }}" id="txteway" name = "txteway" type="text" aria-describedby="nameHelp" placeholder="Please Enter Eway Bill No.">
+              </div>
+              <div class="col-md-6">
+                <label for="txtvehicle">Vehicle No.</label>
+                <input class="form-control" id="txtvehicle" name = "txtvehicle" type="text" value="{{ AutoNo }}" aria-describedby="nameHelp" onfocus="this.select();">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+         <!--Grid Table Starts -->
+        <div class="form-group">
+           <div class="card mb-3">
+
+
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Lot</th>
+                  <th>Party Name</th>
+                  <th>Commodity</th>
+                  <th>GSTIN</th>
+                  <th>Begs</th>
+                  <th>Boxes</th>
+                </tr>
+              </thead>
+              <tfoot>
+
+                <tr>
+                  <th>Total</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th><label id="lbl_ttlbegs" readonly="readonly">{{ beg }}</label></th>
+                  <th><label id="lbl_ttlboxes" readonly="readonly">{{ box }}</label></th>
+                </tr>
+
+                <tr>
+                  <th><input type="text" id="Lot" onfocus="this.select();"/></th>
+                  <th><input type="text" id="Party" readonly="readonly" /></th>
+                  <th><input type="text" id="Commodity" readonly="readonly" /></th>
+                  <th><input type="text" id="GSTIN" readonly="readonly" /></th>
+                  <th><input type="text" id="Begs" onfocus="this.select();"/></th>
+                  <th><input type="text" id="Boxes" onfocus="this.select();" /></th>
+                </tr>
+
+              </tfoot>
+              <tbody>
+              {% for item in pass_details %}
+                  <tr>
+                      <th><input style="border:none" type="text" name="Lot{{ forloop.counter0 }}" id="Lot{{ forloop.counter0 }}" readonly="readonly" value="{{ item.Lot }}"/></th>
+                      <th><input style="border:none" type="text" name="Party{{ forloop.counter0 }}" id="Party{{ forloop.counter0 }}" readonly="readonly" value="{{ item.Name }}" /></th>
+                      <th><input style="border:none" type="text" name="Commodity{{ forloop.counter0 }}" id="Commodity{{ forloop.counter0 }}" readonly="readonly" value="{{ item.Commodity }}"/></th>
+                      <th><input style="border:none" type="text" name ="GSTIN{{ forloop.counter0 }}" id="GSTIN{{ forloop.counter0 }}" readonly="readonly" value="{{ item.gstin }}" /></th>
+                      <th><input style="border:none" type="text" name="Begs{{ forloop.counter0 }}" id="Begs{{ forloop.counter0 }}" readonly="readonly" value="{{ item.Bags }}" /></th>
+                      <th><input style="border:none" type="text" name="Boxes{{ forloop.counter0 }}" id="Boxes{{ forloop.counter0 }}" readonly="readonly" value="{{ item.Boxes }}" /></th>
+                  </tr>
+                  {% endfor %}
+                  {% for i in range %}
+                  <tr>
+                     <th><input style="border:none" type="text" name="Lot{{ i }}" id="Lot{{ i }}" readonly="readonly" value=" "/></th>
+                     <th><input style="border:none" type="text" name="Party{{ i }}" id="Party{{ i }}" readonly="readonly" value=" " /></th>
+                     <th><input style="border:none" type="text" name="Commodity{{ i }}" id="Commodity{{ i }}" readonly="readonly" value=" "/></th>
+                     <th><input style="border:none" type="text" name ="GSTIN{{ i }}" id="GSTIN{{ i }}" readonly="readonly" value=" " /></th>
+                     <th><input style="border:none" type="text" name="Begs{{ i }}" id="Begs{{ i }}" readonly="readonly" value=" " /></th>
+                     <th><input style="border:none" type="text" name="Boxes{{ i }}" id="Boxes{{ i }}" readonly="readonly" value=" " /></th>
+                   </tr>
+                   {% endfor %}   
+              </tbody>
+            </table>
+          </div>
+
+      </div>
+    </div>
+
+         <!-- Grid Table Ends -->
+
+ <div class="form-group">
+    <div class="form-row">
+        <div class="col-md-6"> </div>
+          <div class="col-md-3">
+            <input class="form-control" id="btnsubmit" type="Submit" aria-describedby="nameHelp" >
+          </div>
+          <div class="col-md-3">
+            <a href="\gatepass\view\"> Cancel </a>
+          </div>
+        </div>
+      </div>
+
+     </form>
+      </div>
+{% endblock %}
+
+{% block js-foot %}
+
+	<script src="{% static "custom_jquery/edit_gatepass.js" %}"></script>
+
+{% endblock %}
