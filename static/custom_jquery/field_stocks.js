@@ -39,7 +39,13 @@ $(document).ready(function() {
 							$("#txtbox").focus();
 							return false;
 						}
-						
+						if(id == "txtbox"){
+							$("#txtremark").focus();
+							return false;
+						}
+						if(id == "txtremark"){
+							return false;
+						}
 						
 				
 				}
