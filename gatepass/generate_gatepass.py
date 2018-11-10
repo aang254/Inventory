@@ -27,7 +27,7 @@ class MCLine(Flowable):
 
 
 def generate(item):
-    file_name = "Bills/" + "Bill_" + item[0]['gatepass'] + ".pdf"
+    file_name = "../Bills/" + "Bill_" + item[0]['gatepass'] + ".pdf"
 
     if os.path.exists(file_name):
         os.remove(file_name)
