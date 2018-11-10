@@ -23,6 +23,8 @@ class Stocks(models.Model):
     commodity = models.ForeignKey(Commodity, on_delete=models.CASCADE)
     begs = models.IntegerField(default=0)
     boxes = models.IntegerField(default=0)
+    rem_beg = models.IntegerField(default=0)
+    rem_box = models.IntegerField(default=0)
     remarks = models.TextField(max_length=200, null=True)
 
     def __str__(self):
@@ -30,5 +32,5 @@ class Stocks(models.Model):
         String for representing the Model object.
         """
         return str(self.lot) + ',' + str(self.date) + ',' + str(self.Name) + ',' + str(self.commodity) + ',' + \
-               str(self.begs) + ',' + str(self.boxes)
+               str(self.begs) + ',' + str(self.boxes) + ',' + str(self.remarks)
 

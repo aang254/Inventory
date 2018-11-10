@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}<title>Warehouse Management System</title>{% endblock %}
+
+{% block title_js %} <script src="{% static "node_modules\jquery\dist\jquery.js"%}"> </script> {% endblock %}
+
+{% block content %}
+<div class="img-responsive">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href=" ">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Stock/Add</li>
+      </ol>
+
+     <form id="form_gatepass" method="post" action="\stock\submit\">
+      {% csrf_token %}
+        <div class="form-group">
+         <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="txtlot">Lot.</label>
+                <input onfocus="this.select();" class="form-control" id="txtlot" name = "txtlot" type="text" value="{{ lot }}" aria-describedby="nameHelp" autofocus required>
+              </div>
+              <div class="col-md-6">
+                <label for="txtdate">Date</label>
+                <input onfocus="this.select();" class="form-control" name="txtdate" id="txtdate" type="text" value="{{ date }}" aria-describedby="nameHelp" required>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group">
+                <div class="form-row">
+                <div class="col-md-6">
+                        <label for="txtparty">Party Name</label>
+                        <!--<input class="form-control" id="txtparty" name="txtparty" type="text" onfocus="this.select();" aria-describedby="nameHelp" >-->
+                        <select id="txtparty" name="txtparty" class="form-control"  required>
+                                <option value="">----------------------------------------------</option>
+                                {% for party in partyName %}
+                                <option value= "{{ party }}" > {{ party }} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                <div class="col-md-6">
+                    <label for="txtcommodity">Commodity</label>
+                    <!--<input onfocus="this.select();" class="form-control" name="txtcommodity" id="txtcommodity" type="text" aria-describedby="nameHelp" required>-->
+                    <select id="txtcommodity" name="txtcommodity" class="form-control"  required>
+                        <option value="">----------------------------------------------</option>
+                        {% for com in comm_data %}
+                        <option value="{{ com }}">{{ com }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+         <div class="form-group">
+            <div class="form-row">
+            <div class="col-md-6">
+                    <label for="txtbegs">Begs</label>
+                    <input class="form-control" id="txtbegs" name="txtbegs" type="text" value="0" aria-describedby="nameHelp" onfocus="this.select();">
+                    </div>
+              <div class="col-md-6">
+                <label for="txtbox">Boxes</label>
+                <input class="form-control" id="txtbox" name="txtbox" type="text" value="0" aria-describedby="nameHelp" onfocus="this.select();">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+                <div class="form-row">
+                <div class="col-md-6">
+                        <label for="txtremark">Remarks</label>
+                        <textarea class="form-control" cols="30" rows="8" id="txtremark" name="txtremark" type="text" aria-describedby="nameHelp" onfocus="this.select();"></textarea>
+                        </div>
+                  <div class="col-md-6">
+                    </div>
+                </div>
+              </div>
+        </div>
+
+        <div class="form-group">
+                    <div class="form-row">
+                    <div class="col-md-6"> </div>
+                      <div class="col-md-3">
+                        <input class="form-control" id="btnsubmit" type="Submit" aria-describedby="nameHelp" >
+                      </div>
+                      <div class="col-md-3">
+                        <a href="\stock\view\"> Cancel </a>
+                      </div>
+                    </div>
+                  </div>
+
+            </form>
+      </div>
+    </div>
+{% endblock %}
+
+{% block js-foot %}
+
+	<script src="{% static "custom_jquery/field_stocks.js" %}"></script>
+
+{% endblock %}

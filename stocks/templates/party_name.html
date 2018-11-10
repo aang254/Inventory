@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}<title>Warehouse Management System</title>{% endblock %}
+
+{% block title_js %} <script src="{% static "node_modules\jquery\dist\jquery.js"%}"> </script> {% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Stock/Select</li>
+      </ol>
+
+     <form id="form_gatepass" method="post" action="/stock/get_data/">
+      {% csrf_token %}
+        <div class="form-group">
+         <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-1">
+                <label for="txtparty">Party:</label>
+              </div>
+              <div class="col-md-3">
+                <input class="form-control" id="txtparty" name = "txtparty" type="text"aria-describedby="nameHelp" >
+              </div>
+              <div class="col-md-2">
+                <input class="form-control" id="btnSubmit" name = "btnSubmit" type="Submit"aria-describedby="nameHelp" >
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+         <!--Grid Table Starts -->
+        <div class="form-group">
+           <div class="card mb-3">
+
+          <div class="form-row">
+              <div class="col-md-8">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Party Name</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                  {% for party in party_name %}
+                  <tr>
+                  <td>{{ party.value }}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+         <!-- Grid Table Ends -->
+
+     </form>
+      </div>
+    <!-- Content page Ends-->
+{% endblock %}
+{% block js-foot %}
+
+	<!-- JS page specific-->
+	<script src="{% static "vendor/datatables/jquery.dataTables.js" %}"></script>
+    <script src="{% static "vendor/datatables/dataTables.bootstrap4.js" %}"></script>
+	<!-- Custom scripts for this page-->
+    <script src="{% static "js/sb-admin-datatables.min.js" %}"></script>
+	<script>
+     var pickedup;
+       $(document).ready(function() {
+
+			$( document ).on( "click", "#dataTable tbody tr" ,function( event ) {
+
+				  // get back to where it was before if it was selected :
+
+				  $("#txtparty").val($(this).find("td").eq(0).html());
+
+				  pickedup = $( this );
+			});
+			});
+     </script>
+
+	{% endblock %}
