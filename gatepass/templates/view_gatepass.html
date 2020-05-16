@@ -22,7 +22,7 @@
           <i class="fa fa-table"></i> Details</div>
         <div class="card-body">
           <div class="table-responsive">
-            <form id="form_gatepass" method="post" action="\gatepass\edit_gatepass\">
+            <form method="post" action="">
                   {% csrf_token %}
                   <input type="hidden" name="txtgatepass" id="txtgatepass" value=" "/>
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -43,7 +43,7 @@
                   {% for item in item_data %}
                   <tr>
                       <th><a href="\gatepass\{{ item.GatePass }}\del\"> Delete </a></th>
-                      <th><input style="border:none" type="text"  readonly="readonly" value="{{ item.GatePass }}"/></th>
+                      <th><a href="\gatepass\{{ item.GatePass }}\edit_gatepass\"> {{ item.GatePass }} </a></th>
                       <th>{{ item.Lot }}</th>
                       <th>{{ item.Date }}</th>
                       <th>{{ item.Name }}</th>
@@ -76,12 +76,4 @@
 
     </div>
      </div>
-{% endblock %}
-{% block js-foot %}
-<!-- Page level plugin JavaScript-->
-    <script src="{% static "vendor/datatables/jquery.dataTables.js" %}"></script>
-    <script src="{% static "vendor/datatables/dataTables.bootstrap4.js" %}"></script>
-	<!-- Custom scripts for this page-->
-    <script src="{% static "js/sb-admin-datatables.min.js" %}"></script>
-    <script src="{% static "custom_jquery/view_gatepass.js" %}"></script>
 {% endblock %}

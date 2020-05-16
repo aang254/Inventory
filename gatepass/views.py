@@ -2,16 +2,14 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from gatepass.models import gate_pass
+from party.models import party_Ledger
+from commodity.models import Commodity
 from stocks.models import Stocks
 from django.db.models import Max
 from django.shortcuts import redirect
+from . import vault,generate_gatepass
 import datetime
 import json
-from . import vault,generate_gatepass
-
-
-
-
 
 def gatepass(request):
     no = gate_pass.objects.all().aggregate(Max('passNo'))
@@ -32,26 +30,22 @@ def gatepass(request):
 def getdata(request):
     if(request.POST['passNo'] == " "):
         data = request.POST['lotNo']
-        print(data)
         search_qs = Stocks.objects.filter(lot=data)
-        print(search_qs)
         fat = str(search_qs[0])
-        fat = fat.split(',')
+        fat = fat.split('*')
         results = []
         details = {}
-        details['Name'] = fat[2]
-        details['Comodity'] = fat[4]
-        details['gstin'] = fat[3]
-        details['bags'] = fat[5]
-        details['boxes'] = fat[6]
+        details['Name'] = fat[3]
+        details['gstin'] = fat[5]
+        details['Comodity'] = fat[-4]
+        details['bags'] = fat[-3]
+        details['boxes'] = fat[-2]
         results.append(details)
         data = json.dumps(results)
-        print(data)
         mimetype = 'application/json'
         return HttpResponse(data, mimetype)
     else:
         data = request.POST['passNo']
-        print(data)
         search_qs = gate_pass.objects.filter(passNo=data)
         fat = str(search_qs[0])
         mimetype = 'application/json'
@@ -85,13 +79,14 @@ def submit(request):
                   }
             data.append(val)
     generate_gatepass.generate(data)
-    print(data)
     for item in data:
+        print(item)
         format_str = '%d/%m/%Y'  # The format
         datetime_obj = datetime.datetime.strptime(item['date'], format_str)
         gate_pass.objects.create(passNo=item['gatepass'],date=datetime_obj.date(),driver_name=item['driver_name'],
-                                 Auto_No=item['vehicleNo'],lot=item['Lot'],
-                                 Name=item['Party'],commodity=item['Commodity'],gstin=item['GSTIN'],
+                                 Auto_No=item['vehicleNo'],lot=Stocks.objects.filter(lot=item['Lot'])[0],
+                                 Name=party_Ledger.objects.filter(Name=item['Party'])[0],
+                                 commodity=Commodity.objects.filter(name=item['Commodity'])[0],gstin=item['GSTIN'],
                                  bill_no=item['eway'],bags=item['Begs'],boxes=item['Boxes'])
 
     return redirect ("/gatepass/add/")
@@ -102,57 +97,57 @@ def view(request):
 
     results = []
     gatepass_list = gate_pass.objects.all()
+    print(gatepass_list)
     for gatepass in gatepass_list:
         json_data = {}
-        gatepass = str(gatepass).split(",")
+        gatepass = str(gatepass).split("*")
         json_data['GatePass'] = gatepass[0]
         json_data['Lot'] = gatepass[1]
-        json_data['Date'] = gatepass[2]
-        json_data['Name'] = gatepass[3]
-        json_data['Commodity'] = gatepass[4]
-        json_data['Bags'] = gatepass[5]
-        json_data['Boxes'] = gatepass[6]
+        json_data['Date'] = gatepass[-1]
+        json_data['Name'] = gatepass[4]
+        json_data['Commodity'] = gatepass[9]
+        json_data['Bags'] = gatepass[-7]
+        json_data['Boxes'] = gatepass[-6]
         results.append(json_data)
     return render(request, "view_gatepass.html", {'item_data': results})
 
 @csrf_exempt
-def edit(request):
-    if (request.method == "POST"):
+def edit(request,question_id):
+    if (question_id != None):
         print("request is post")
-        passNo = request.POST['txtgatepass']
+        #passNo = request.POST['txtgatepass']
+        passNo = question_id
         results = []
         object = gate_pass.objects.filter(passNo=passNo)
         print(object)
-        gatepass = str(object[0]).split(",")
-        print(gatepass)
+        gatepass = str(object[0]).split("*")
         GatePass = gatepass[0]
-        Date = str(gatepass[2]).split("-")
+        Date = str(gatepass[-1]).split("-")
         Date = Date[2]+"/"+Date[1]+"/"+Date[0]
-        print(Date)
-        Driver = gatepass[8]
-        AutoNo = gatepass[7]
-        WayNo = gatepass[9]
+        Driver = gatepass[-4]
+        AutoNo = gatepass[-5]
+        WayNo = gatepass[-3]
         ttl_begs = 0
         ttl_box = 0
         for gatepass in object:
             json_data = {}
-            gatepass = str(gatepass).split(",")
+            gatepass = str(gatepass).split("*")
             json_data['Lot'] = gatepass[1]
-            json_data['Name'] = gatepass[3]
-            json_data['Commodity'] = gatepass[4]
-            json_data['Bags'] = gatepass[5]
-            json_data['Boxes'] = gatepass[6]
-            json_data['gstin'] = gatepass[10]
-            ttl_begs = ttl_begs + int(gatepass[5])
-            ttl_box = ttl_box + int(gatepass[6])
+            json_data['Name'] = gatepass[4]
+            json_data['Commodity'] = gatepass[9]
+            json_data['Bags'] = gatepass[-7]
+            json_data['Boxes'] = gatepass[-6]
+            json_data['gstin'] = gatepass[-2]
+            ttl_begs = ttl_begs + int(gatepass[-7])
+            ttl_box = ttl_box + int(gatepass[-6])
             results.append(json_data)
         print(results)
-        return render (request,'edit.html',{'range': range(len(results),6),'pass_details': results, 'GatePass': GatePass, 'Date': Date,
+        return render (request,'edit_gatepass.html',{'range': range(len(results),6),'pass_details': results, 'GatePass': GatePass, 'Date': Date,
                                             'Driver': Driver, 'AutoNo': AutoNo,'WayNo': WayNo,'beg':ttl_begs,'box':ttl_box})
 
     else:
         print("request is not post")
-        return redirect("/")
+        return redirect("/gatepass/view/")
 
 
 
@@ -181,14 +176,14 @@ def submit_edit(request):
                   }
             data.append(val)
     #generate_gatepass.generate(data)
-    print(data)
     gate_pass.objects.filter(passNo=gatepassNo).delete()
     for item in data:
         format_str = '%d/%m/%Y'  # The format
         datetime_obj = datetime.datetime.strptime(item['date'], format_str)
         gate_pass.objects.create(passNo=item['gatepass'],date=datetime_obj.date(),driver_name=item['driver_name'],
-                                 Auto_No=item['vehicleNo'],lot=item['Lot'],
-                                 Name=item['Party'],commodity=item['Commodity'],gstin=item['GSTIN'],
+                                 Auto_No=item['vehicleNo'],lot=Stocks.objects.filter(lot=item['Lot'])[0],
+                                 Name=party_Ledger.objects.filter(Name=item['Party'])[0],
+                                 commodity=Commodity.objects.filter(name=item['Commodity'])[0],gstin=item['GSTIN'],
                                  bill_no=item['eway'],bags=item['Begs'],boxes=item['Boxes'])
 
     return redirect ("/gatepass/view/")

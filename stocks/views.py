@@ -19,10 +19,12 @@ def add(request):
     today = today.strftime("%d/%m/%Y")
     party = party_Ledger.objects.all()
     commodity = Commodity.objects.all()
-    party_name = []
+    party_name,comm_list = [],[]
     for p in party:
-        party_name.append(str(p).split(",")[0])
-    return render(request,"add.html",{'partyName':party_name,'comm_data':commodity,'lot':lot,'date': today})
+        party_name.append(str(p).split('*')[1])
+    for c in commodity:
+        comm_list.append(str(c).split('*')[1])
+    return render(request,"add.html",{'partyName':party_name,'comm_data':comm_list,'lot':lot,'date': today})
 
 
 def party_name(request):
@@ -31,7 +33,7 @@ def party_name(request):
     for party in partys:
         json_data = {}
         party = str(party)
-        party = party.split(',')[0]
+        party = party.split('*')[1]
         json_data['value'] = party
         results.append(json_data)
     return render(request,"party_name.html",{'party_name': results})
@@ -42,22 +44,20 @@ def display(request):
         partyName = request.POST.get('txtparty', '')
         party = party_Ledger.objects.filter(Name=partyName)
         data = Stocks.objects.filter(Name=party[0])
-
         results = []
         ttl_begs = 0
         ttl_boxes = 0
         for party in data:
             json_data = {}
-            party = (str(party)).split(',')
+            party = (str(party)).split('*')
             json_data['lot'] = party[0]
-            json_data['Name'] = party[2]
-            json_data['Commodity'] = party[4]
-            json_data['begs'] = party[5]
-            json_data['boxes'] = party[6]
+            json_data['Name'] = party[3]
+            json_data['Commodity'] = party[-4]
+            json_data['begs'] = party[-3]
+            json_data['boxes'] = party[-2]
             ttl_begs = ttl_begs + int(json_data['begs'])
             ttl_boxes = ttl_boxes + int(json_data['boxes'])
             results.append(json_data)
-
         return render(request, "stock_data.html", {'party_name': partyName, 'party_data': results, 'box': ttl_boxes, 'beg': ttl_begs})
     else:
         return redirect('/stock/view/')
@@ -73,12 +73,12 @@ def delete(request,question_id,name):
     ttl_boxes = 0
     for party in data:
         json_data = {}
-        party = (str(party)).split(',')
+        party = (str(party)).split('*')
         json_data['lot'] = party[0]
-        json_data['Name'] = party[2]
-        json_data['Commodity'] = party[4]
-        json_data['begs'] = party[5]
-        json_data['boxes'] = party[6]
+        json_data['Name'] = party[3]
+        json_data['Commodity'] = party[-4]
+        json_data['begs'] = party[-3]
+        json_data['boxes'] = party[-2]
         ttl_begs = ttl_begs + int(json_data['begs'])
         ttl_boxes = ttl_boxes + int(json_data['boxes'])
         results.append(json_data)
@@ -111,22 +111,23 @@ def submit(request):
 
 def edit(request,lot_id):
     stock = Stocks.objects.filter(lot=lot_id)
-    data = str(stock[0]).split(',')
+    data = str(stock[0]).split('*')
+    print(data)
     json_data = {}
     json_data['lot'] = data[0]
     Date = str(data[1]).split("-")
     Date = Date[2]+"/"+Date[1]+"/"+Date[0]
     json_data['Date'] = Date
-    json_data['Name'] = data[2]
-    json_data['Commodity'] = data[4]
-    json_data['begs'] = data[5]
-    json_data['boxes'] = data[6]
-    json_data['remarks'] = data[7]
+    json_data['Name'] = data[3]
+    json_data['Commodity'] = data[-4]
+    json_data['begs'] = data[-3]
+    json_data['boxes'] = data[-2]
+    json_data['remarks'] = data[-1]
     party = party_Ledger.objects.exclude(Name=data[2])
     commodity = Commodity.objects.exclude(name=data[4])
     party_name = []
     for p in party:
-        party_name.append(str(p).split(",")[0])
+        party_name.append(str(p).split('*')[0])
     return render(request,"edit.html",{'stock': json_data,'partyName':party_name,'comm_data':commodity})
 
 def update(request):
@@ -142,8 +143,7 @@ def update(request):
         begs = request.POST['txtbegs']
         box = request.POST['txtbox']
         remark = request.POST['txtremark']
-        Stocks.objects.filter(lot=lot).delete()
-        Stocks.objects.create(lot=lot,date=datetime_obj.date(),Name=name[0],commodity=comd[0],
+        Stocks.objects.filter(lot=lot).update(lot=lot,date=datetime_obj.date(),Name=name[0],commodity=comd[0],
                                begs=begs,boxes=box,remarks=remark,rem_beg=begs,rem_box=box )
 
 
@@ -154,16 +154,16 @@ def update(request):
         ttl_boxes = 0
         for party in data:
             json_data = {}
-            party = (str(party)).split(',')
+            party = (str(party)).split('*')
             json_data['lot'] = party[0]
-            json_data['Name'] = party[2]
-            json_data['Commodity'] = party[4]
-            json_data['begs'] = party[5]
-            json_data['boxes'] = party[6]
+            json_data['Name'] = party[3]
+            json_data['Commodity'] = party[-4]
+            json_data['begs'] = party[-3]
+            json_data['boxes'] = party[-2]
             ttl_begs = ttl_begs + int(json_data['begs'])
             ttl_boxes = ttl_boxes + int(json_data['boxes'])
             results.append(json_data)
 
-        return render(request, "stock_data.html", {'party_name': name, 'party_data': results, 'box': ttl_boxes, 'beg': ttl_begs})
+        return render(request, "stock_data.html", {'party_name': str(name).split('*')[1], 'party_data': results, 'box': ttl_boxes, 'beg': ttl_begs})
     else:
         return redirect('/')

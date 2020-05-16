@@ -2,14 +2,81 @@
 {% load static %}
 {% block title %}<title>Warehouse Management System</title>{% endblock %}
 
-{% block title_js %}{% endblock %}
+{% block title_js %} <script src="{% static "node_modules\jquery\dist\jquery.js"%}"> </script> {% endblock %}
 
 {% block content %}
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.Name }}
-        <button type="submit" class="save btn btn-default">Save</button>
-    </form>
+<div class="img-responsive">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href=" ">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Stock/Add</li>
+      </ol>
+
+     <form id="form_gatepass" method="post" action="/party/add/">
+      {% csrf_token %}
+        <div class="form-group">
+         <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="txtlot">Party ID</label>
+                <input class="form-control" id="txtaction" name = "txtaction" type="hidden" value="{{ action }}" aria-describedby="nameHelp" required>
+                <input class="form-control" id="txtid" name = "txtid" type="text" value="{{ partyID }}" aria-describedby="nameHelp" required readonly>
+              </div>
+              <div class="col-md-6">
+                <label for="txtdate">Name</label>
+                <input onfocus="this.select();" class="form-control" name="txtname" id="txtname" type="text" value="{{ name }}" aria-describedby="nameHelp" autofocus required>
+              </div>
+              
+            </div>
+          </div>
+          <div class="form-group">
+                <div class="form-row">
+                <div class="col-md-6">
+                        <label for="txtparty">GSTIN</label>
+                        <!--<input class="form-control" id="txtparty" name="txtparty" type="text" onfocus="this.select();" aria-describedby="nameHelp" >-->
+                        <input onfocus="this.select();" class="form-control" id="txtgstin" name = "txtgstin" type="text" value="{{ gstin }}" maxlength="15" aria-describedby="nameHelp" required>
+                        </div>
+                <div class="col-md-6">
+                    <label for="txtcommodity">Phone</label>
+                    <!--<input onfocus="this.select();" class="form-control" name="txtcommodity" id="txtcommodity" type="text" aria-describedby="nameHelp" required>-->
+                    <input onfocus="this.select();" class="form-control" id="txtcontact" name = "txtcontact" type="text" value="{{ phone }}" pattern="^\+?1?\d{9,15}$" title="+919856427154" maxlength="12" aria-describedby="nameHelp" required>
+                  </div>
+                </div>
+              </div>
+          <div class="form-group">
+                <div class="form-row">
+                <div class="col-md-6">
+                        <label for="txtremark">Address</label>
+                        <textarea class="form-control" cols="30" rows="4" id="txtaddr" name="txtaddr" type="text" aria-describedby="nameHelp" onfocus="this.select();">{{ addr }}</textarea>
+                        </div>
+                  <div class="col-md-6">
+                    </div>
+                </div>
+              </div>
+        </div>
+
+        <div class="form-group">
+                    <div class="form-row">
+                    <div class="col-md-6"> </div>
+                      <div class="col-md-3">
+                        <input class="form-control" id="btnsubmit" type="Submit" aria-describedby="nameHelp" >
+                      </div>
+                      <div class="col-md-3">
+                        <a href="\party\view\"> Cancel </a>
+                      </div>
+                    </div>
+                  </div>
+
+            </form>
+      </div>
+    </div>
 {% endblock %}
 
 {% block js-foot %}
+
+	<script src="{% static "custom_jquery/field_stocks.js" %}"></script>
+
 {% endblock %}

@@ -11,60 +11,47 @@
         <li class="breadcrumb-item">
           <a href=" ">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Balance</li>
+        <li class="breadcrumb-item active">Commodity</li>
       </ol>
-
          <!--Grid Table Starts -->
         <div class="form-group">
            <div class="card mb-3">
 
           <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-table"></i> CUSTOMER: {{ party_name }}</div>
+          <i class="fa fa-table"></i> Details</div>
         <div class="card-body">
           <div class="table-responsive">
+            <form id="form_gatepass" method="post" action="">
+                  {% csrf_token %}
+                  <input type="hidden" name="txtgatepass" id="txtgatepass" value=" "/>
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
                     <th></th>
-                    <th>lot</th>
-                    <th>Party Name</th>
-                    <th>Commodity</th>
-                    <th>begs</th>
-                    <th>boxes</th>
+                    <th>Name</th>
                 </tr>
               </thead>
 
               <tbody>
-                  {% for party in party_data %}
+                  {% for item in item_data %}
                   <tr>
-                    <th><a href="\stock\{{ party.lot }}\{{ party.Name }}\del\"> Delete </a></th>
-                    <td><a href="\stock\{{ party.lot }}\edit\">{{ party.lot }}</a></td>
-                      <td>{{ party.Name }}</td>
-                      <td>{{ party.Commodity }}</td>
-                      <td>{{ party.begs }}</td>
-                      <td>{{ party.boxes }}</td>
+                      <th><a href="\commodity\{{ item.CommodityNo }}\del\"> Delete </a></th>
+                      <th>{{ item.commodity }}</th>
                   </tr>
                   {% endfor %}
               </tbody>
               <tfoot>
                 <tr>
-                    <th>  </th>
-                    <th>  </th>
-                    <th>Total</th>
-                    <th> </th>
-                    <th>{{ beg }}</th>
-                    <th>{{ box }}</th>
+                    <th></th>
+                    <th>Name</th>
                 </tr>
               </tfoot>
             </table>
+            </form>
           </div>
               </div>
           </div>
-
-
-
-
          <!-- Grid Table Ends -->
       </div>
     <!-- Content page Ends-->

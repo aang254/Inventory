@@ -1,5 +1,10 @@
-Bills/
+Bills/*
+!Bills/.gitkeep
 .idea/
 db.sqlite3
 *.pyo
 *.pyc
+migrations/*
+!migrations/.gitkeep
+inventory/settings.py
+cold/*
