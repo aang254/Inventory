@@ -4,7 +4,7 @@ Bills/*
 db.sqlite3
 *.pyo
 *.pyc
-migrations/*
-!migrations/.gitkeep
+*/migrations/*
+!*/migrations/.gitkeep
 inventory/settings.py
 cold/*
