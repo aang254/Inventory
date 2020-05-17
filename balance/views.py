@@ -5,9 +5,13 @@ from party.models import party_Ledger
 from commodity.models import Commodity
 from django.db.models import Sum,Q
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+
+
 # Create your views here.
 
 @csrf_exempt
+@login_required
 def display(request):
     partys = party_Ledger.objects.all()
     results = []
@@ -21,6 +25,7 @@ def display(request):
 
 
 @csrf_exempt
+@login_required
 def display_com(request):
     partys = party_Ledger.objects.all()
     results = []
@@ -35,6 +40,7 @@ def display_com(request):
 
 
 @csrf_exempt
+@login_required
 def get_data(request):
     if request.method == "POST":
         partyName = request.POST.get('txtparty', '')
@@ -77,6 +83,7 @@ def get_data(request):
 
 
 @csrf_exempt
+@login_required
 def get_commodity_data(request):
     if request.method == "POST":
         partyName = request.POST.get('txtparty', '')
@@ -156,6 +163,7 @@ def get_commodity_data(request):
 
 
 @csrf_exempt
+@login_required
 def get_commodity_balance(request):
 
     results = []

@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,re_path,include
+from django.contrib.auth import views as auth_views
+
 from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +27,6 @@ urlpatterns = [
     re_path(r'gatepass/', include('gatepass.urls'), name='data'),
     re_path(r'balance/', include('balance.urls')),
     re_path(r'party/',include('party.urls')),
+    re_path(r'^accounts/login/$', auth_views.login, name='login'), #Addlogin authentication
+    re_path(r'^logout/$', auth_views.logout, {'next_page': '/login/'}, name='logout'), #Logout
 ]

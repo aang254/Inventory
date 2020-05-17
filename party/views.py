@@ -2,8 +2,12 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from party.models import party_Ledger
 from django.db.models import Max
+from django.contrib.auth.decorators import login_required
 import datetime
+from django.contrib.auth.decorators import permission_required
 
+
+@login_required
 def add(request):
     action = 'launch'
     if(request.method == "POST"):
@@ -28,7 +32,8 @@ def add(request):
         party = numb + 1
     return render(request,'party.html',{'partyID': party, 'action': 'add'})
 
-
+@login_required
+@permission_required('party.can_add_party')
 def display(request):
 
     results = []
@@ -44,10 +49,12 @@ def display(request):
         results.append(json_data)
     return render(request, "view_party.html", {'item_data': results})
 
+@login_required
 def delete(request,question_id):
     party_Ledger.objects.filter(id=question_id).delete()
     return redirect ("/party/view/")
 
+@login_required
 def edit(request,question_id):
     party = party_Ledger.objects.filter(id=question_id)
     party = (str(party[0])).split('*')

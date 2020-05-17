@@ -4,9 +4,10 @@ from django.db.models import Max
 from party.models import party_Ledger
 from commodity.models import Commodity
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 import datetime
 # Create your views here.
-
+@login_required
 def add(request):
     no = Stocks.objects.all().aggregate(Max('lot'))
     numb = no['lot__max']
@@ -26,7 +27,7 @@ def add(request):
         comm_list.append(str(c).split('*')[1])
     return render(request,"add.html",{'partyName':party_name,'comm_data':comm_list,'lot':lot,'date': today})
 
-
+@login_required
 def party_name(request):
     partys = party_Ledger.objects.all()
     results = []
@@ -38,7 +39,7 @@ def party_name(request):
         results.append(json_data)
     return render(request,"party_name.html",{'party_name': results})
 
-
+@login_required
 def display(request):
     if request.method == 'POST':
         partyName = request.POST.get('txtparty', '')
@@ -62,7 +63,7 @@ def display(request):
     else:
         return redirect('/stock/view/')
 
-
+@login_required
 def delete(request,question_id,name):
     Stocks.objects.filter(lot=question_id).delete()
     party = party_Ledger.objects.filter(Name=name)
@@ -87,7 +88,7 @@ def delete(request,question_id,name):
 
 
 
-
+@login_required
 def submit(request):
     if(request.method == "POST"):
         lot = request.POST['txtlot']
@@ -108,7 +109,7 @@ def submit(request):
         return redirect ("/stock/add/")
 
 
-
+@login_required
 def edit(request,lot_id):
     stock = Stocks.objects.filter(lot=lot_id)
     data = str(stock[0]).split('*')
@@ -130,6 +131,7 @@ def edit(request,lot_id):
         party_name.append(str(p).split('*')[0])
     return render(request,"edit.html",{'stock': json_data,'partyName':party_name,'comm_data':commodity})
 
+@login_required
 def update(request):
     if request.method == 'POST':
         lot = request.POST['txtlot']

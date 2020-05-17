@@ -40,9 +40,9 @@ def generate(item):
     ##############################################################################
     #Variable Initiation
     ##############################################################################
-    company = " "
-    address = " "
-    company_GSTIN = "GSTIN:- " + " "
+    company = "SJ ICE and COLD STORAGE PVT. LTD"
+    address = "SIROLI, AGRA"
+    company_GSTIN = "GSTIN:- " + "ascdfe12346546"
     BillNo = item[0]['gatepass']
     formatted_time = item[0]['date']
     Vehicle_number = item[0]['vehicleNo']

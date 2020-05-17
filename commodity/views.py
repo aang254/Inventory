@@ -3,9 +3,11 @@ from django.views.decorators.csrf import csrf_exempt
 from commodity.models import Commodity
 from django.db.models import Max
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 # View all entered commodity
+@login_required
 def display(request):
     results = []
     Commodity_list = Commodity.objects.all()
@@ -18,11 +20,13 @@ def display(request):
     return render(request, "view_commodity.html", {'item_data': results})
 
 #Delete a commodity
+@login_required
 def delete(request,question_id):
     Commodity.objects.filter(CommodityNo=question_id).delete()
     return redirect ("/commodity/view/")
 
 #Create commodity form
+@login_required
 def commodity_add(request):
     no = Commodity.objects.all().aggregate(Max('CommodityNo'))
     numb = no['CommodityNo__max']
@@ -32,6 +36,7 @@ def commodity_add(request):
         passNo = numb + 1
     return render (request,'commodity.html',{'commodityNO': passNo})
 
+@login_required
 def submit(request):
     CommodityNO = request.POST['CommodityNo']
     commodity = request.POST['txtcommodity']

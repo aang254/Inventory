@@ -8,9 +8,10 @@ from stocks.models import Stocks
 from django.db.models import Max
 from django.shortcuts import redirect
 from . import vault,generate_gatepass
+from django.contrib.auth.decorators import login_required
 import datetime
 import json
-
+@login_required
 def gatepass(request):
     no = gate_pass.objects.all().aggregate(Max('passNo'))
     numb = no['passNo__max']
@@ -27,6 +28,7 @@ def gatepass(request):
 
 
 @csrf_exempt
+@login_required
 def getdata(request):
     if(request.POST['passNo'] == " "):
         data = request.POST['lotNo']
@@ -54,7 +56,7 @@ def getdata(request):
 
 
 
-
+@login_required
 def submit(request):
     gatepassNo = request.POST['txtgatepass']
     date = request.POST['txtdate']
@@ -80,7 +82,6 @@ def submit(request):
             data.append(val)
     generate_gatepass.generate(data)
     for item in data:
-        print(item)
         format_str = '%d/%m/%Y'  # The format
         datetime_obj = datetime.datetime.strptime(item['date'], format_str)
         gate_pass.objects.create(passNo=item['gatepass'],date=datetime_obj.date(),driver_name=item['driver_name'],
@@ -92,7 +93,7 @@ def submit(request):
     return redirect ("/gatepass/add/")
 
 
-
+@login_required
 def view(request):
 
     results = []
@@ -112,6 +113,7 @@ def view(request):
     return render(request, "view_gatepass.html", {'item_data': results})
 
 @csrf_exempt
+@login_required
 def edit(request,question_id):
     if (question_id != None):
         print("request is post")
@@ -152,6 +154,7 @@ def edit(request,question_id):
 
 
 @csrf_exempt
+@login_required
 def submit_edit(request):
     gatepassNo = request.POST['txtgatepass']
     date = request.POST['txtdate']
@@ -188,7 +191,7 @@ def submit_edit(request):
 
     return redirect ("/gatepass/view/")
 
-
+@login_required
 def delete(request,question_id):
     gate_pass.objects.filter(passNo=question_id).delete()
     return redirect ("/gatepass/view/")
