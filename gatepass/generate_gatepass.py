@@ -1,7 +1,7 @@
 import json
 import os
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER,TA_RIGHT
-from reportlab.lib.pagesizes import A5
+from reportlab.lib.pagesizes import A5,A4
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Flowable
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 ################################################################################################
@@ -33,10 +33,10 @@ def generate(item):
         os.remove(file_name)
 
 
-    doc = SimpleDocTemplate(file_name, pagesize=A5,
+    doc = SimpleDocTemplate(file_name, pagesize=A4,
                         rightMargin=72, leftMargin=72,
                         topMargin=40, bottomMargin=18)
-    Story = []
+    Story,story2 = [],[]
     ##############################################################################
     #Variable Initiation
     ##############################################################################
@@ -50,7 +50,8 @@ def generate(item):
     driveName = item[0]['driver_name']
     PartyName = item[0]['Party']
     gstin = item[0]['GSTIN']
-    line = MCLine(280) #lINE WIDTH ON GATEPASS
+    #line = MCLine(280) #lINE WIDTH ON GATEPASS
+    line = MCLine(450) #lINE WIDTH ON GATEPASS
     ##############################################################################
     
     #Styles/Allignments for the page
@@ -88,17 +89,16 @@ def generate(item):
     tbl_data = [
         [Paragraph(txt_pass, styles["Justify"]), Paragraph(txt_time, styles["Right"])],
         [Paragraph(txt_party, styles["Justify"])],
-        [Paragraph(txt_gstin, styles["Justify"])],
-        [Paragraph(txt_driver, styles["Justify"]), Paragraph(txt_number, styles["Right"])],
-        [Paragraph(txt_eway, styles["Justify"])]
+        [Paragraph(txt_gstin, styles["Justify"]),Paragraph(txt_eway, styles["Right"])],
+        [Paragraph(txt_driver, styles["Justify"]), Paragraph(txt_number, styles["Right"])]
     ]
 
     tbl = Table(tbl_data)
     Story.append(tbl)
-    Story.append(Spacer(1, 12))
+    Story.append(Spacer(1, 6))
 
     Story.append(line)
-    Story.append(Spacer(1, 6))
+    Story.append(Spacer(1, 3))
 
 
     tbl_data = [
@@ -107,7 +107,7 @@ def generate(item):
     ]
     tbl = Table(tbl_data)
     Story.append(tbl)
-    Story.append(Spacer(1, 6))
+    Story.append(Spacer(1, 3))
     Story.append(line)
     ttl_beg = 0
     ttl_box = 0
@@ -122,19 +122,26 @@ def generate(item):
     
     tbl = Table(tbl_data)
     Story.append(tbl)
-    Story.append(Spacer(1, 12))
+    Story.append(Spacer(1, 6))
 
     Story.append(line)
-    Story.append(Spacer(1, 6))
+    Story.append(Spacer(1, 3))
     tbl_data = [
         [Paragraph("Total", styles["Justify"]),Paragraph(str(ttl_beg), styles["Justify"]),
         Paragraph(str(ttl_box), styles["Justify"])]
     ]
     tbl = Table(tbl_data)
     Story.append(tbl)
-    Story.append(Spacer(1, 6))
-
+    Story.append(Spacer(1, 3))
     Story.append(line)
+    Story.append(Spacer(1, 30))
+    Story.append(Paragraph("Authorized Signature", styles["Right"]))
 
-    doc.build(Story)
+    #Adding Multi Build OPtion
+    story2 = Story.copy()
+    story2.append(Spacer(1, 20))
+    story2.append(line)
+    story2.append(Spacer(1, 20))
+    story2.extend(Story)
+    doc.build(story2)
 
