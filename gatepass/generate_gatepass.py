@@ -40,85 +40,101 @@ def generate(item):
     ##############################################################################
     #Variable Initiation
     ##############################################################################
-    company = "SJ ICE and COLD STORAGE PVT. LTD"
-    address = "SIROLI, AGRA"
+    company = "S.J. ICE AND COLD STORAGE PVT. LTD."
+    address = "SIROLI, AGRA- 282001"
     company_GSTIN = "GSTIN:- " + "ascdfe12346546"
     BillNo = item[0]['gatepass']
     formatted_time = item[0]['date']
     Vehicle_number = item[0]['vehicleNo']
     WayBill = item[0]['eway']
     driveName = item[0]['driver_name']
+    PartyName = item[0]['Party']
+    gstin = item[0]['GSTIN']
+    line = MCLine(280) #lINE WIDTH ON GATEPASS
     ##############################################################################
+    
+    #Styles/Allignments for the page
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Center', alignment=TA_CENTER))
-
-    ptext = '<font size=15>%s</font>' % company
-    Story.append(Paragraph(ptext, styles["Center"]))
-    Story.append(Spacer(1, 4))
-
-    ptext = '<font size=10>%s</font>' % address
-    Story.append(Paragraph(ptext, styles["Center"]))
-
-
-    ptext = '<font size=10>%s</font>' % company_GSTIN
-    Story.append(Paragraph(ptext, styles["Center"]))
-    ptext = '<font size=10>Bill: %s</font>' % BillNo
-    Story.append(Paragraph(ptext, styles["Center"]))
-    Story.append(Spacer(1, 5))
-
-
-    styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
     styles.add(ParagraphStyle(name='Right', alignment=TA_RIGHT))
 
+    #Heading Details
+    challanHeading = '<font size=9>Gatepass/Delivery Challan</font>'
+    challanHeading2 = '<font size=9>Ph: 8445355567</font>'
+    corp = '<font size=15>%s</font>' % company
+    corp_add = '<font size=10>%s</font>' % address
+    corp_gstin = '<font size=10>%s</font>' % company_GSTIN
+
+    #Info for the page
+    txt_party = '<font size=9>Name: %s</font>' % PartyName
+    txt_gstin = '<font size=9>GSTIN: %s</font>' % gstin
+    txt_pass = '<font size=9>Pass No.: %s</font>'% BillNo
     txt_time = '<font size=9>%s</font>' % formatted_time
     txt_number = '<font size=9>Vehicle No.: %s</font>'% Vehicle_number
-    tbl_data = [
-        [Paragraph(txt_time, styles["Justify"]), Paragraph(txt_number, styles["Right"])]
-    ]
-    tbl = Table(tbl_data)
-    Story.append(tbl)
-    Story.append(Spacer(1, 5))
+    txt_eway = '<font size=9>EWay Bill: %s</font>' % WayBill
+    txt_driver = '<font size=9>Driver Name: %s</font>'% driveName
 
-    txt_time = '<font size=9>BillNO: %s</font>' % WayBill
-    txt_number = '<font size=9>Driver Name: %s</font>'% driveName
+    
+    Story.append(Paragraph(challanHeading, styles["Center"]))
+    Story.append(Paragraph(challanHeading2, styles["Right"]))
+    Story.append(Spacer(1, 4))
+    Story.append(Paragraph(corp, styles["Center"]))
+    Story.append(Spacer(1, 4))
+    Story.append(Paragraph(corp_add, styles["Center"]))
+    Story.append(Paragraph(corp_gstin, styles["Center"]))
+    Story.append(Spacer(1, 4))
+
     tbl_data = [
-        [Paragraph(txt_time, styles["Justify"]), Paragraph(txt_number, styles["Right"])]
+        [Paragraph(txt_pass, styles["Justify"]), Paragraph(txt_time, styles["Right"])],
+        [Paragraph(txt_party, styles["Justify"])],
+        [Paragraph(txt_gstin, styles["Justify"])],
+        [Paragraph(txt_driver, styles["Justify"]), Paragraph(txt_number, styles["Right"])],
+        [Paragraph(txt_eway, styles["Justify"])]
     ]
+
     tbl = Table(tbl_data)
     Story.append(tbl)
     Story.append(Spacer(1, 12))
 
-    line = MCLine(280)
     Story.append(line)
-    Story.append(Spacer(1, 12))
+    Story.append(Spacer(1, 6))
 
 
     tbl_data = [
-        [Paragraph("Item", styles["Justify"]),Paragraph("Name", styles["Justify"]),
-         Paragraph("Gstin", styles["Justify"]), Paragraph("Begs", styles["Justify"]),
+        [Paragraph("Item", styles["Justify"]), Paragraph("Begs", styles["Justify"]),
          Paragraph("Boxes", styles["Justify"])]
     ]
     tbl = Table(tbl_data)
     Story.append(tbl)
     Story.append(Spacer(1, 6))
-
-    line = MCLine(280)
     Story.append(line)
-    item_details = {'name': 'kism', 'party':'testing1234User', 'Tin': 'Abhsdidsew2321', 'qty': '12'}
-
+    ttl_beg = 0
+    ttl_box = 0
     tbl_data = []
     for i in item:
         Item = Paragraph(i['Commodity'], styles["Justify"])
-        Name = Paragraph(i['Party'], styles["Justify"])
-        Gstin = Paragraph(i['GSTIN'], styles["Justify"])
         Begs = Paragraph(i['Begs'], styles["Justify"])
         Boxes = Paragraph(i['Boxes'], styles["Justify"])
-
-                # Add this loop's step row into data array
-        tbl_data.append([Item, Name, Gstin, Begs, Boxes])
-
+        ttl_beg = ttl_beg + int(i['Begs'])
+        ttl_box = ttl_box + int(i['Boxes'])
+        tbl_data.append([Item,Begs, Boxes])
+    
     tbl = Table(tbl_data)
     Story.append(tbl)
+    Story.append(Spacer(1, 12))
+
+    Story.append(line)
+    Story.append(Spacer(1, 6))
+    tbl_data = [
+        [Paragraph("Total", styles["Justify"]),Paragraph(str(ttl_beg), styles["Justify"]),
+        Paragraph(str(ttl_box), styles["Justify"])]
+    ]
+    tbl = Table(tbl_data)
+    Story.append(tbl)
+    Story.append(Spacer(1, 6))
+
+    Story.append(line)
+
     doc.build(Story)
 

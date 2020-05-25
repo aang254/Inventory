@@ -9,4 +9,5 @@ urlpatterns = [
    path(r'submit/',views.submit),
    path(r'<int:lot_id>/edit/',views.edit),
    path(r'edit_submit/',views.update),
+   path(r'<int:lotID>/receipt/',views.print_receipt),
 ]

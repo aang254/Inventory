@@ -5,7 +5,9 @@ from party.models import party_Ledger
 from commodity.models import Commodity
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from .print_stock import print_stock
 import datetime
+import os
 # Create your views here.
 @login_required
 def add(request):
@@ -169,3 +171,10 @@ def update(request):
         return render(request, "stock_data.html", {'party_name': str(name).split('*')[1], 'party_data': results, 'box': ttl_boxes, 'beg': ttl_begs})
     else:
         return redirect('/')
+
+def print_receipt(request,lotID):
+    file_name = print_stock(str(lotID))
+    #Print the Register
+    file_path = os.path.abspath(file_name)
+    os.startfile(file_path, "print")
+    return redirect('/stock/view/')

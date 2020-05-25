@@ -27,6 +27,7 @@
               <thead>
                 <tr>
                     <th></th>
+                    <th></th>
                     <th>lot</th>
                     <th>Party Name</th>
                     <th>Commodity</th>
@@ -38,6 +39,7 @@
               <tbody>
                   {% for party in party_data %}
                   <tr>
+                    <th><a href="\stock\{{ party.lot }}\receipt\"> Print </a></th>
                     <th><a href="\stock\{{ party.lot }}\{{ party.Name }}\del\"> Delete </a></th>
                     <td><a href="\stock\{{ party.lot }}\edit\">{{ party.lot }}</a></td>
                       <td>{{ party.Name }}</td>
@@ -49,6 +51,7 @@
               </tbody>
               <tfoot>
                 <tr>
+                    <th> </th>
                     <th>  </th>
                     <th>  </th>
                     <th>Total</th>
