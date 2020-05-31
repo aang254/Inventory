@@ -5,14 +5,21 @@ from reportlab.lib.pagesizes import A5,A4
 from gatepass.generate_gatepass import MCLine
 from .models import Stocks
 import os
+import json
 
 def print_stock(stockID):
     stock = Stocks.objects.filter(lot=stockID)
     stock = str(stock[0]).split('*')
+    ##############################################################################
+    #Get Company Values
+    ##############################################################################
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(os.path.join(BASE_DIR, 'vault.json')) as secrets_file:
+        secrets = json.load(secrets_file)
     #var
-    company = "S.J. ICE AND COLD STORAGE PVT. LTD."
-    address = "SIROLI, AGRA- 282001"
-    company_GSTIN = "GSTIN:- " + "ascdfe12346546"
+    company = secrets["company"]
+    address = secrets["address"]
+    company_GSTIN = secrets["company_GSTIN"]
     company_contact = "8445355567"
     Heading = "STOCK MEMO"
     lotID = stock[0]
@@ -25,7 +32,8 @@ def print_stock(stockID):
     bags = stock[-3]
     box = stock[-2]
     #############################################################
-    file_name = "../STOCK_Print/" + "LOT_" + stock[0] + ".pdf"
+    #file_name = "../STOCK_Print/" + "LOT_" + stock[0] + ".pdf"
+    file_name = "STOCK_PRINT/LOT_" + stock[0] + ".pdf"
 
     if os.path.exists(file_name):
         os.remove(file_name)

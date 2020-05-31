@@ -27,7 +27,7 @@ class MCLine(Flowable):
 
 
 def generate(item):
-    file_name = "../Bills/" + "Bill_" + item[0]['gatepass'] + ".pdf"
+    file_name = "Bills_PRINT/" + "Bill_" + item[0]['gatepass'] + ".pdf"
 
     if os.path.exists(file_name):
         os.remove(file_name)
@@ -38,11 +38,17 @@ def generate(item):
                         topMargin=40, bottomMargin=18)
     Story,story2 = [],[]
     ##############################################################################
+    #Get Company Values
+    ##############################################################################
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(os.path.join(BASE_DIR, 'vault.json')) as secrets_file:
+        secrets = json.load(secrets_file)
+    ##############################################################################
     #Variable Initiation
     ##############################################################################
-    company = "S.J. ICE AND COLD STORAGE PVT. LTD."
-    address = "SIROLI, AGRA- 282001"
-    company_GSTIN = "GSTIN:- " + "ascdfe12346546"
+    company = secrets["company"]
+    address = secrets["address"]
+    company_GSTIN = secrets["company_GSTIN"]
     BillNo = item[0]['gatepass']
     formatted_time = item[0]['date']
     Vehicle_number = item[0]['vehicleNo']

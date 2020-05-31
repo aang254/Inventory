@@ -44,6 +44,9 @@ ALLOWED_HOSTS = []
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = "/"
 
+# SESSION AGE 5 Minutes
+SESSION_COOKIE_AGE = 1*60
+
 # Application definition
 
 INSTALLED_APPS = [

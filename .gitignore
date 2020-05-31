@@ -1,5 +1,5 @@
-Bills/*
-!Bills/.gitkeep
+Bills_PRINT/*
+!Bills_PRINT/.gitkeep
 .idea/
 db.sqlite3
 *.pyo
@@ -8,4 +8,5 @@ db.sqlite3
 !*/migrations/.gitkeep
 secrets.json
 cold/*
-STOCK_Print/*
+STOCK_PRINT/*
+!STOCK_PRINT/.gitkeep
