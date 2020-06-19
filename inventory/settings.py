@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'stocks',
     'gatepass',
     'balance',
+    'billing',
 ]
 
 MIDDLEWARE = [

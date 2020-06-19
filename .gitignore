@@ -6,7 +6,9 @@ db.sqlite3
 *.pyc
 */migrations/*
 !*/migrations/.gitkeep
+!*/migrations/__init__.py
 secrets.json
+vault.json
 cold/*
 STOCK_PRINT/*
 !STOCK_PRINT/.gitkeep

@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}<title>BILL|WMS</title>{% endblock %}
+
+{% block title_js %} <script src="{% static "node_modules\jquery\dist\jquery.js"%}"> </script> {% endblock %}
+
+{% block content %}
+<div class="img-responsive">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href=" ">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Bill/Generate</li>
+      </ol>
+     <h1 style="text-align:center">M/S. Abhi Traders </h1>
+     <h6 style="text-align:center">NARIPURA, AGRA </h6>
+
+     <form id="form_gatepass" method="post" action="#">
+      {% csrf_token %}
+        <div class="form-group">
+         <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-2">
+                <label for="txtdate">Date</label>
+                <input onfocus="this.select();" class="form-control" name="txtdate" id="txtdate" type="text" value="{{ date }}" aria-describedby="nameHelp" autofocus required>
+              </div>
+              <div class="col-md-10">
+                <label for="txtcustomer">Customer Name:</label>
+                <input onfocus="this.select();" class="form-control" id="txtcustomer" name = "txtcustomer" type="text" value="{{ customer }}" aria-describedby="nameHelp"  required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <label for="txtaddr">Address</label>
+                        <input onfocus="this.select();" class="form-control" id="txtaddr" name = "txtaddr" type="text" value="{{ address }}" aria-describedby="nameHelp">
+                    </div>
+                </div>
+           </div>
+         <div class="form-group">
+            <div class="form-row">
+            <div class="col-md-6">
+                <label for="txtgstin">GSTIN</label>
+                <input onfocus="this.select();" class="form-control" id="txtgstin" name = "txtgstin" type="text" value="{{ gstin }}" maxlength="15" aria-describedby="nameHelp">
+              </div>
+              <div class="col-md-6">
+                <label for="txtphone">Contact</label>
+                <input class="form-control" id="txtphone" name="txtphone" type="text" aria-describedby="nameHelp" onfocus="this.select();">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+         <!--Grid Table Starts -->
+        <div class="form-group">
+           <div class="card mb-3">
+
+
+          <div class="table-responsive">
+            <table class="table table-bordered" name="Bill_Table" id="Bill_Table" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Quantity</th>
+                  <th>Price(INR)</th>
+                  <th>GST(%)</th>
+                  <th>Total(INR)</th>
+                </tr>
+              </thead>
+              <tfoot>
+              <tr>
+                  <th>Total</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th><label id="lbl_ttl" readonly="readonly">0</label></th>
+                </tr>
+                <tr>
+                  <th><input type="text" id="Item" onfocus="this.select();"/></th>
+                  <th><input type="text" id="Quantity" onfocus="this.select();" value=1 /></th>
+                  <th><input type="text" id="Price" onfocus="this.select();" value=0 /></th>
+                  <th><input type="text" id="GST" onfocus="this.select();" value=0 /></th>
+                  <th><input type="text" id="Total" onfocus="this.select();"value=0 /></th>
+                </tr>
+              </tfoot>
+              <tbody>
+              {% for i in "0123456789" %}
+               <tr>
+                  <th><input style="border:none" type="text" name="Item{{ i }}" id="Item{{ i }}" readonly="readonly" value=" "/></th>
+                  <th><input style="border:none" type="text" name="Price{{ i }}" id="Price{{ i }}" readonly="readonly" value=" " /></th>
+                  <th><input style="border:none" type="text" name="Quantity{{ i }}" id="Quantity{{ i }}" readonly="readonly" value=" "/></th>
+                  <th><input style="border:none" type="text" name ="GST{{ i }}" id="GST{{ i }}" readonly="readonly" value=" " /></th>
+                  <th><input style="border:none" type="text" name="Total{{ i }}" id="Total{{ i }}" readonly="readonly" value=" " /></th>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+
+            </table>
+          </div>
+
+      </div>
+     </div>
+
+         <!-- Grid Table Ends -->
+
+        <div class="form-group">
+                    <div class="form-row">
+                    <div class="col-md-6"> </div>
+                      <div class="col-md-3">
+                        <input class="form-control" id="btnsubmit" type="Submit" aria-describedby="nameHelp" >
+                      </div>
+                      <div class="col-md-3">
+                        <a href="#"> Cancel </a>
+                      </div>
+                    </div>
+                  </div>
+
+            </form>
+      </div>
+    </div>
+{% endblock %}
+
+{% block js-foot %}
+
+	<script src="{% static "custom_jquery/billing.js" %}"></script>
+
+{% endblock %}

@@ -29,4 +29,5 @@ urlpatterns = [
     re_path(r'party/',include('party.urls')),
     re_path(r'^accounts/login/$', auth_views.login, name='login'), #Addlogin authentication
     re_path(r'^logout/$', auth_views.logout, {'next_page': '/login/'}, name='logout'), #Logout
+    re_path(r'billing/',include('billing.urls')),
 ]
