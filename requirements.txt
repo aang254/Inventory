@@ -49,7 +49,7 @@ packaging==20.3
 pathspec==0.8.0
 pbr==5.4.5
 pep8-naming==0.9.1
-Pillow==7.1.2
+Pillow==8.2.0
 pkginfo==1.5.0.1
 pluggy==0.13.1
 postgres==3.0.0
